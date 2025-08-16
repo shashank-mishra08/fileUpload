@@ -20,7 +20,7 @@ app.use(fileupload(
 // Import the database connection function
 const db = require("./config/database");
 // Connect to the database
-db.connect();
+db();
 
 // Import the Cloudinary configuration function
 const cloudinary = require("./config/cloudinary");
@@ -31,6 +31,11 @@ cloudinary.cloudinaryConnect();
 const Upload = require("./routes/FileUpload");
 // Mount the file upload routes at the /api/v1/upload endpoint
 app.use('/api/v1/upload', Upload);
+
+// Default route to serve the HTML frontend
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 // Start the server and listen for incoming requests on the specified port
 app.listen(PORT, () => {

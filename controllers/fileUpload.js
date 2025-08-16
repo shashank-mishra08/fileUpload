@@ -82,13 +82,20 @@ exports.imageUpload = async (req, res) => {
         // 2. Extracting the uploaded file from request
         // The uploaded file is extracted from the request using `req.files.imageFile`.
         const file = req.files.imageFile;
+        // If no file is provided, return an error
+        if (!file) {
+            return res.status(400).json({
+                success: false,
+                message: "No image file uploaded."
+            });
+        }
         console.log(file);
 
         // 3. File type validation
         // An array of supported file types is defined.
         const supportedTypes = ["jpg", "jpeg", "png"]; // Allowed file types
         // The file extension is extracted from the file name.
-        const fileType = file.name.split('.')[1].toLowerCase(); // Extracting file extension
+        const fileType = file.name.split('.').pop().toLowerCase(); // Extracting file extension
         console.log("file type", fileType);   
         // 4. Checking if file type is supported
         // The `isFileTypeSupported` function is called to check if the file type is supported.
@@ -221,6 +228,13 @@ exports.imageSizeReducer = async (req, res) => {
 
         // The uploaded file is extracted from the request using `req.files.imageFile`.
         const file = req.files.imageFile;
+        // If no file is provided, return an error
+        if (!file) {
+            return res.status(400).json({
+                success: false,
+                message: "No image file uploaded."
+            });
+        }
         console.log(file);
 
         // Validation

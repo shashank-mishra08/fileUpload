@@ -1,18 +1,20 @@
-// routes me sabse pehle hame express ko import krna hai
-
+// Import the Express framework
 const express = require("express");
+// Create a new router object
 const router = express.Router();
 
-// fir apan saare ke saare handlers function laate hain apne controllers  me se
+// Import the file upload handlers from the controller
 const {  localFileUpload, imageUpload, videoUpload, imageSizeReducer } = require("../controllers/fileUpload");
 
-// fir hame in handlers ko routes se connect krna hota hai, so we will create 4 api routes for each handler function
-//router.post("/image", imageUpload);
-router.post("/local", localFileUpload);
+// Define the API routes for file uploads
+// This route handles local file uploads
+router.post("/localFileUpload", localFileUpload);
+// This route handles image uploads
 router.post("/imageUpload", imageUpload)
-router.post("/video", videoUpload);  
-router.post("/imagereducer", imageSizeReducer); 
+// This route handles video uploads
+router.post("/videoUpload", videoUpload);  
+// This route handles image size reduction
+router.post("/imageSizeReducer", imageSizeReducer); 
 
-// finally, we will export the router
+// Export the router
 module.exports = router;
-// ab hamare routes ready hai, ab hamare index.js me in routes ko mount krna hai--> jo ki hamne already mount kr diya hai

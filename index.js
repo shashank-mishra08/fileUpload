@@ -1,38 +1,38 @@
-// 
-
-// Import dependencies
+// Import the Express framework
 const express = require("express");
-require("dotenv").config();
-const fileUpload = require("express-fileupload");
-
-// Initialize app
+// Create an instance of the Express application
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Load environment variables from the .env file
+require("dotenv").config();
+// Set the port number for the server
+const PORT = process.env.PORT || 3000;
+
+// Enable the Express application to parse JSON-formatted request bodies
 app.use(express.json());
-app.use(fileUpload( 
+// Import the express-fileupload middleware for handling file uploads
+const fileupload = require("express-fileupload");
+// Enable the express-fileupload middleware
+app.use(fileupload( 
   {useTempFiles: true, tempFileDir: '/tmp/'}
 )); // Helps in file upload
 
-// Import routes
-const Upload = require("./routes/FileUpload");
-app.use("/api/v1/upload", Upload); // Mount the upload route
+// Import the database connection function
+const db = require("./config/database");
+// Connect to the database
+db.connect();
 
-// Connect to MongoDB (after middleware)
-const connectDB = require("./config/database");
-connectDB();
-
+// Import the Cloudinary configuration function
+const cloudinary = require("./config/cloudinary");
 // Connect to Cloudinary
-const { cloudinaryConnect } = require("./config/cloudinary");
-cloudinaryConnect();
+cloudinary.cloudinaryConnect();
 
-// Default route
-app.get("/", (req, res) => {
-    res.send("Welcome to the MongoDB connection setup!");
-});
+// Import the file upload routes
+const Upload = require("./routes/FileUpload");
+// Mount the file upload routes at the /api/v1/upload endpoint
+app.use('/api/v1/upload', Upload);
 
-// Start server
+// Start the server and listen for incoming requests on the specified port
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-});
+    console.log(`App is running at ${PORT}`);
+})
